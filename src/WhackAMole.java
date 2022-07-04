@@ -7,7 +7,7 @@ public class WhackAMole {
     int molesLeft;
     int attemptsLeft;
     int gridDimension;
-    private char[][] moleGrid;
+    char[][] moleGrid;
 
     public WhackAMole(int numAttempts, int gridDimension) { // constructor has no return, no need to specify
 
@@ -86,20 +86,24 @@ public class WhackAMole {
         /**
          * Given a location, place a mole at that location
          */
-        this.moleGrid[x][y] = 'M'; // place mole
-        this.molesLeft++; // update moles left
-        return true;
+        int upper_bound = this.gridDimension; // cannot place mole outside of grid
+        if (x <= upper_bound && y <= upper_bound) {
+            this.moleGrid[x][y] = 'M'; // place mole
+            this.molesLeft++; // update moles left
+            return true;
+        }
+        return false;
     }
 
     private void placeMoles(int numOfMoles) {
         /**
          * Randomly place n moles in grid
          */
-        int upper_bound = this.gridDimension - 1; // cannot place mole outside of grid
+        int upper_bound = this.gridDimension; // cannot place mole outside of grid
 
         // random position then place
         while (this.molesLeft < numOfMoles) { // why while rather than for? automatic retries without having to check grid
-            int x_rand = new Random().nextInt(upper_bound);
+            int x_rand = new Random().nextInt(upper_bound); // upper bound not inclusive
             int y_rand = new Random().nextInt(upper_bound);
             this.place(x_rand, y_rand); // places and updates molesLeft
         }
